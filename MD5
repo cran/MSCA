@@ -1,0 +1,15 @@
+ccd87c69b0d6fdaf49c697254b319bfd *DESCRIPTION
+173753034f6c8cf4fdf50409b85d9a3d *NAMESPACE
+e8ac52f24cfeb2beb64943d42517f69f *R/EHR.R
+0d899137cb21bcad77e6c5abded4cfd4 *R/RcppExports.R
+2af0e2f535dd727ab6ed158df3728141 *R/f2.R
+416e97adb0de2c845f7b9695c92f9139 *R/make_state_matrix.R
+c425022aa50e7b00032d6e46d563257f *data/EHR.RData
+6ea805d17a7a751f4a6e331a3964a0e9 *man/EHR.Rd
+89fdb6b99668621133b130f0903044f6 *man/MSCA-package.Rd
+ac10a12b110978819fe0f0e1f4e2f406 *man/make_state_matrix.Rd
+5df30970d7aac27d2b292cff9f714646 *man/msca.Rd
+6c5152b8c1dc27a2266af5aaabeba502 *src/FAST_JACK.cpp
+e9528d0cf8bb7c1e289b94349f4bd820 *src/RcppExports.cpp
+2950d8e59ca018b7632ef0a21c00fc23 *src/init_rcpp.cpp
+7a45f9d47bc3bcc2f1b011376dc64b7a *src/rcpp_hello_world.cpp

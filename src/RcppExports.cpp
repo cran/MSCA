@@ -23,20 +23,39 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rcpp_hello_world
-List rcpp_hello_world();
-RcppExport SEXP _MSCA_rcpp_hello_world() {
+// make_state_matrix_rcpp
+NumericMatrix make_state_matrix_rcpp(DataFrame data, IntegerVector id, IntegerVector ltc, NumericVector aos, int l, int fail_code, int cens_code);
+RcppExport SEXP _MSCA_make_state_matrix_rcpp(SEXP dataSEXP, SEXP idSEXP, SEXP ltcSEXP, SEXP aosSEXP, SEXP lSEXP, SEXP fail_codeSEXP, SEXP cens_codeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpp_hello_world());
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type id(idSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type ltc(ltcSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type aos(aosSEXP);
+    Rcpp::traits::input_parameter< int >::type l(lSEXP);
+    Rcpp::traits::input_parameter< int >::type fail_code(fail_codeSEXP);
+    Rcpp::traits::input_parameter< int >::type cens_code(cens_codeSEXP);
+    rcpp_result_gen = Rcpp::wrap(make_state_matrix_rcpp(data, id, ltc, aos, l, fail_code, cens_code));
+    return rcpp_result_gen;
+END_RCPP
+}
+// jaccard_index_rcpp_upper
+NumericMatrix jaccard_index_rcpp_upper(NumericMatrix mat);
+RcppExport SEXP _MSCA_jaccard_index_rcpp_upper(SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
+    rcpp_result_gen = Rcpp::wrap(jaccard_index_rcpp_upper(mat));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_MSCA_jaccard_index_rcpp_parallel", (DL_FUNC) &_MSCA_jaccard_index_rcpp_parallel, 2},
-    {"_MSCA_rcpp_hello_world", (DL_FUNC) &_MSCA_rcpp_hello_world, 0},
+    {"_MSCA_make_state_matrix_rcpp", (DL_FUNC) &_MSCA_make_state_matrix_rcpp, 7},
+    {"_MSCA_jaccard_index_rcpp_upper", (DL_FUNC) &_MSCA_jaccard_index_rcpp_upper, 1},
     {NULL, NULL, 0}
 };
 

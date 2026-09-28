@@ -2,7 +2,7 @@
 % Please edit documentation in R/fast_clara_jaccard.R
 \name{fast_clara_jaccard}
 \alias{fast_clara_jaccard}
-\title{Fast CLARA-like clustering using Jaccard dissimilarity}
+\title{Fast CLARA-like clustering using Jaccard dissimilarity - beta version - under assessment}
 \usage{
 fast_clara_jaccard(
   data,
@@ -10,7 +10,10 @@ fast_clara_jaccard(
   samples = 20,
   samplesize = NULL,
   seed = 123,
-  frac = 1
+  cost_comp_ratio = 1,
+  part_method = "pam",
+  maxneighbor = 0.075,
+  numlocal = 3
 )
 }
 \arguments{
@@ -24,7 +27,13 @@ fast_clara_jaccard(
 
 \item{seed}{Random seed for reproducibility (default: 123).}
 
-\item{frac}{Fraction of the population to use for cost computation (default: 1).}
+\item{cost_comp_ratio}{Proportion of data sampled to compute the clustering cost (default: 1).}
+
+\item{part_method}{Partition method used in the partition phase \code{pam} (default) or \code{clarans}}
+
+\item{maxneighbor}{If part_method = \code{clarans}, set the number of medoid swap (default 0,075 * samplesize).}
+
+\item{numlocal}{If part_method = \code{clarans}, set the number of medoid swap phases (default 3).}
 }
 \value{
 A list with index of patients from the sample a, medoid indices, cluster assignment, and cost.
@@ -32,22 +41,32 @@ A list with index of patients from the sample a, medoid indices, cluster assignm
 \item{clustering}{An integer vector of cluster assignments for each patient.}
 \item{medoids}{Indices of medoids associated witht the lower cost.}
 \item{sample}{Indices of the sampled columns used in clustering.}
-\item{cost}{Total cost (sum of dissimilarities to assigned medoids).}
+\item{cost}{Total cost (median of dissimilarities to assigned medoids).}
 }
 }
 \description{
 Implements a CLARA (Clustering Large Applications) strategy using Jaccard dissimilarity
 computed on individual patients state matrices. The algorithm repeatedly samples subsets of the data,
-performs PAM clustering on each subset, and selects the medoids that minimise the total dissimilarity across
-the full dataset. Final assignments are made by mapping all data points to the nearest selected medoid.
+performs PAM or CLARANS partition on each subset, and selects the medoids that minimise the total dissimilarity across the full dataset. Final assignments are made by mapping all data points to the nearest selected medoid.
+Cost can also be computed on a fraction of the dataset to reduce computational cost (see details).
 }
 \details{
-This implementation adapts the original CLARA method described by Kaufman and Rousseeuw (1990)
-in "Finding Groups in Data: An Introduction to Cluster Analysis".
+This function adapts the original CLARA method described by Kaufman and Rousseeuw (1990)
+in "Finding Groups in Data: An Introduction to Cluster Analysis". In addition, it allows to replace the #' PAM partitioning method by the CLARANS procedure which is less costly.
 }
 \note{
-To improve efficiency, the function used fastpam procedure from the fastkmedoids library and uses optimized Jaccard index computation.
-For simulation purpose, the \code{frac} parameter can be used to reduce time when computing the cost for each sample. The final cost is given using medoids associated with lower cost computed on fractionned data. A final analysis using the proper CLARA method should be conducted setting \code{frac} to 1.
+To improve efficiency, the function uses either the \code{fastpam} or \code{fastclarans}
+procedure from the \pkg{fastkmedoids} package along with an optimised Jaccard index computation.
+
+For testing purposes, the \code{cost_comp_ratio} parameter allows cost evaluation
+to be performed on a subsample of the dataset at each iteration. The final clustering cost
+is always computed on the full dataset using the medoids that achieved the lowest cost
+on the subsampled data.
+
+Use this parameter with caution: setting \code{cost_comp_ratio} < 1 introduces randomness
+into cost estimation during the iterative phase. For final analyses, it is recommended
+to set \code{cost_comp_ratio = 1} to ensure a deterministic cost evaluation, as implemented in the
+original CLARA method.
 }
 \references{
 Kaufman, L. & Rousseeuw, P. J. (1990). \emph{Finding Groups in Data: An Introduction to Cluster Analysis}. Wiley.
